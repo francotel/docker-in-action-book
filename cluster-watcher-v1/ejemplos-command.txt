@@ -1,0 +1,10 @@
+docker run -d --name mailer dockerinaction/ch2_mailer
+
+docker run --detach --name web nginx:latest
+
+Si desea eliminar solo los contenedores con un estado de exited : 
+docker rm $(docker ps --all -q -f status=exited)
+
+docker run --interactive --tty --link web:web --name web_test busybox:latest /bin/sh
+
+docker run -it --name agent --link web:insideweb --link mailer:insidemailer dockerinaction/ch2_agent
