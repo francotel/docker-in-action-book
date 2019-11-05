@@ -8,3 +8,15 @@ docker rm $(docker ps --all -q -f status=exited)
 docker run --interactive --tty --link web:web --name web_test busybox:latest /bin/sh
 
 docker run -it --name agent --link web:insideweb --link mailer:insidemailer dockerinaction/ch2_agent
+
+docker create --cidfile /tmp/web.cid nginx
+
+MAILER_CID=$(docker run -d dockerinaction/ch2_mailer)
+WEB_CID=$(docker create nginx)
+AGENT_CID=$(docker create --link $WEB_CID:insideweb --link $MAILER_CID:insidemailer dockerinaction/ch2_agent)
+
+docker start $AGENT_CID
+docker start $WEB_CID
+
+install wordpress 4 read-only
+docker run -d --name wp --read-only wordpress:4
