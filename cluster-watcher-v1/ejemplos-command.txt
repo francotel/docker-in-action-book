@@ -20,3 +20,6 @@ docker start $WEB_CID
 
 install wordpress 4 read-only
 docker run -d --name wp --read-only wordpress:4
+
+verificar si un container is running
+docker inspect --format "{{.State.Running}}" wp
