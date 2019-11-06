@@ -45,3 +45,12 @@ docker create \
 --env WORDPRESS_DB_USER=site_admin \
 --env WORDPRESS_DB_PASSWORD=MeowMix42 \
 wordpress:4
+
+docker run -d --name backoff-detector --restart always busybox date
+
+lamp container
+docker run -d -p 80:80 --name lamp-test tutum/lamp
+docker exec lamp-test ps
+docker top lamp-test 
+
+eiminar un container tan pronto este pase a un estado not running
