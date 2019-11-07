@@ -1,0 +1,20 @@
+
+run container password
+docker run -it --rm dockerinaction/ch3_ex2_hunt
+
+grabar imagen en un archivo
+docker pull busybox:latest
+docker save -o myfile.tar busybox:latest
+
+borramos la imagen base
+docker rmi busybox
+
+cargamos la imagen guardada
+docker load –i myfile.tar
+
+crear desde DOckerfile 
+docker build -t dia_ch3/dockerfile:latest ch3_dockerfile
+
+comparar tiempo de instalación de las imagenes:
+docker pull dockerinaction/ch3_myapp
+docker pull dockerinaction/ch3_myotherapp
