@@ -26,3 +26,25 @@ create keyspace docker_hello_world
 };
 
 verificamos que se haya creado el keyspace y uego salimos
+
+stopeamos el container y luego lo eliminamos
+docker stop cass1
+docker rm -vf cass1
+
+creamos otro container con el volumen compartido de cass-shared - cass2
+docker run -d --volumes-from cass-shared --name cass2 cassandra:2.2
+
+creamos un container efimero para comprobar el keyspace creado anteriormente
+docker run -it --rm --link cass2:cass cassandra:2.2 cqlsh cass
+
+corremos el comando para ver el keyspace
+select *
+from system.schema_keyspaces
+where keyspace_name = 'docker_hello_world';
+
+eliminamos los containers creados 
+docker rm -vf cass2 cass-shared
+
+dos tipos de volumes
+- bind mount volume
+- docker managed volume /var/lib/docker/volumes/volume-id
