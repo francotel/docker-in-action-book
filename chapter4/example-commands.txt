@@ -48,3 +48,9 @@ docker rm -vf cass2 cass-shared
 dos tipos de volumes
 - bind mount volume
 - docker managed volume /var/lib/docker/volumes/volume-id
+
+creamos una carpeta con un archivo index.html de prueba
+ojo que docker conoce solo rutas absolutas
+docker run -d --name bmweb -v "$(pwd)"/example-docs:/usr/local/apache2/htdocs -p 80:80 httpd:latest
+
+para verificar : docker inspect container-name
