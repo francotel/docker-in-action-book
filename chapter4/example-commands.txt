@@ -52,5 +52,29 @@ dos tipos de volumes
 creamos una carpeta con un archivo index.html de prueba
 ojo que docker conoce solo rutas absolutas
 docker run -d --name bmweb -v "$(pwd)"/example-docs:/usr/local/apache2/htdocs -p 80:80 httpd:latest
-
 para verificar : docker inspect container-name
+
+Comando para borrar todos los conetendores 
+docker rm -v $(docker ps -q -a)
+
+ingresar a un contenedor:
+docker exec -ti "nombre del container" bash
+
+creamos un container de volumen de solo lectura:
+docker run --name bmweb2 --volume "$(pwd)"/example-docs:/usr/local/apache2/htdocs/:ro -p 80:80 httpd:latest
+
+probamos creando un nuevo container para editar un archivo desde adentro del container
+docker run --rm -v "$(pwd)"/example-docs:/testspace:ro alpine /bin/sh -c 'echo test > /testspace/test'
+
+Cuando montas un volumen que no existe docker lo crea por ti, por ejemplo la carpeta absent no existe
+
+docker run --rm -v "$(pwd)"/example-docs/absent:/absent alpine:latest /bin/sh -c 'mount | grep absent'
+
+vemos que se crea a carpeta
+ls ~/example-docs/absent
+
+Crear volumen administrado por docker no bind (intercambio)
+docker run -d -v /var/lib/cassandra/data --name cass-shared alpine echo "Data Container"
+
+lo cual vemos que lo creo en la siguiente ruta:
+docker inspect -f "{{json .Mounts}}" cass-shared
